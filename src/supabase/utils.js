@@ -1,8 +1,11 @@
 import { supabase } from './config'
 
-const onAuth = (setUserProfile, setUserData) => {
+const onAuth = (userDB, setUserProfile, setUserData) => {
     supabase.auth.onAuthStateChange((event, session) => {
         setUserProfile(session)
+        const rol = session.user.id
+        console.log(session.user.id)
+        readUserData('Users', rol, userDB, setUserData)
       })
 }
 
@@ -22,7 +25,6 @@ const signInWithEmailAndPassword = async (email, password) => {
 
 const signOut = async (email, password) => {
     const { error } = await supabase.auth.signOut()
-
 }
 
 
@@ -31,9 +33,6 @@ const writeUserData = async (rute, object) => {
     const result = await supabase
     .from(rute)
     .insert(object)
-
-
-    console.log(result)
 }
 const readUserData = async (rute, uuid, userDB, setUserData) => {
     const result = await supabase

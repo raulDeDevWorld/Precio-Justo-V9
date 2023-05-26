@@ -10,11 +10,11 @@ import { onAuth } from '@/supabase/utils'
 
 export function WithAuth(Component) {
     return () => {
-        const { user, setUserProfile, setUserData } = useUser()
+        const { user, userDB, setUserProfile, setUserData } = useUser()
         const router = useRouter()
 
         useEffect(() => {
-            if(user === undefined)onAuth(setUserProfile, setUserData)
+            if(user === undefined)onAuth(userDB, setUserProfile, setUserData)
             if(user === null) router.push('/')
         }, [user])
         

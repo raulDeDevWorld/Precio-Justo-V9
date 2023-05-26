@@ -11,7 +11,7 @@ import Input from '@/components/Input'
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const { user, setUserProfile, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG } = useUser()
+  const { user, userDB, setUserProfile, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG } = useUser()
 
   const router = useRouter()
 
@@ -23,7 +23,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    onAuth(setUserProfile, setUserData, postsIMG, setUserPostsIMG)
+    onAuth(userDB, setUserProfile, setUserData)
     if (user) router.replace('/Cliente')
   }, [user]);
 
@@ -42,25 +42,25 @@ export default function Home() {
         // dark:bg-gray-800 dark:border-gray-700"
         >
           <form className="space-y-6" onSubmit={signInHandler} >
-            <h5 className="text-xl font-medium text-white dark:text-white">Iniciar Sesión</h5>
+            <h5 className="text-xl font-medium text-white ">Iniciar Sesión</h5>
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm text-left font-medium text-gray-900 dark:text-white">Email</label>
+              <label htmlFor="email" className="block mb-2 text-sm text-left font-medium text-white">Email</label>
               <Input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required />
             </div>
             <div>
-              <label htmlFor="password" className="block mb-2 text-sm text-left  font-medium text-gray-900 dark:text-white">Contraseña</label>
+              <label htmlFor="password" className="block mb-2 text-sm text-left  font-medium text-white">Contraseña</label>
               <Input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
             </div>
             <div className="flex items-start">
               <a href="#" className="ml-auto text-green-400 text-sm text-blue-700 hover:underline">Olvidaste tu contraseña?</a>
             </div>
-            <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Iniciar Sesión</button>
+            <Button type="submit" theme="Primary">Iniciar Sesión</Button>
             <div className="text-sm font-medium text-gray-500 dark:text-gray-300">No tienes una cuenta? <Link href="/SignUp" className="text-green-400 hover:underline">Registrate</Link >
             </div>
           </form>
         </div>
       </main>
-  
+
       {/* {success == false && <Error>ERROR: verifique e intente nuevamente</Error>}
         {success == 'complete' && <Error>Llene todo el formulario</Error>} */}
     </div>
