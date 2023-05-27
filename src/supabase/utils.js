@@ -5,9 +5,8 @@ import { supabase } from './config'
 const onAuth = (userDB, setUserProfile, setUserData) => {
     supabase.auth.onAuthStateChange((event, session) => {
         setUserProfile(session)
-        const rol = session.user.id
-        console.log(session.user.id)
-        readUserData('Users', rol, userDB, setUserData)
+        const uuid = session.user.id
+        readUserData('Users', uuid, userDB, setUserData)
       })
 }
 
