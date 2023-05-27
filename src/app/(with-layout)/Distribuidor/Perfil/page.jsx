@@ -1,17 +1,30 @@
 'use client'
-import { useState } from 'react'
+import { readUserData} from '@/supabase/utils'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { useUser } from '../../../../context/Context.js'
 import Button from '../../../../components/Button'
 import Subtitle from '@/components/Subtitle'
 import Paragraph from '@/components/Paragraph'
+import { WithAuth } from '@/HOCs/WithAuth'
 
-export default function Home() {
+function Home() {
     const router = useRouter()
 
     const { user, userDB, setUserData } = useUser()
     const [state, setState] = useState({})
 
+
+
+
+
+
+    console.log(userDB)
+
+    useEffect(() => {
+        if (user && user.users ) readUserData('Distribuidores', user.user.id, userDB, setUserData)
+        if (userDB && userDB.Users ) router.replace(userDB.Users.rol)
+      }, [user]);
     return (
         <div className="min-h-[92vh] bg-white p-5">
             <br />
@@ -57,3 +70,7 @@ export default function Home() {
         </div>
     )
 }
+
+
+
+export default  WithAuth(Home)

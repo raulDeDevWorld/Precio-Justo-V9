@@ -1,4 +1,5 @@
 'use client'
+import { writeUserData, readUserData} from '@/supabase/utils'
 import { useState } from 'react'
 import { useUser } from '../../../context/Context.js'
 import Input from '../../../components/Input'
@@ -10,9 +11,10 @@ import Checkbox from '@/components/Checkbox'
 import Button from '../../../components/Button'
 import { useMask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
+import { WithAuth } from '@/HOCs/WithAuth'
 
 
-export default function Home() {
+function Home() {
     const router = useRouter()
 
     const { user, userDB, setUserData } = useUser()
@@ -28,15 +30,15 @@ export default function Home() {
         setState({ ...state, [e.target.name]: e.target.value })
     }
     function onChangeHandlerCheck(e) {
-        setState({ ...state, [e.target.name]: e.target.checked })
+        setState({ ...state, ['dias de atencion']: {...state['dias de atencion'], [e.target.name]: e.target.checked} })
     }
     function onClickHandler(name, value) {
         setState({ ...state, [name]: value })
     }
     function save(e) {
         e.preventDefault()
-        setUserData(state)
-        router.push('Distribuidor/Perfil')
+        writeUserData('Distribuidores', {...state, uuid: user.user.id})
+        router.push('/Distribuidor/Perfil')
     }
 
     return (
@@ -46,26 +48,26 @@ export default function Home() {
                 <label htmlFor="file" className="block flex justify-center items-center w-[100px] h-[100px] bg-white border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 rounded-[100px]" >Subir Imagen</label>
                 <input className="hidden" id='file' type="file" />
             </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div className="grid gap-6 mb-6 md:grid-cols-2">
 
                 <div>
                     <Label htmlFor="">Nombre de la empresa</Label>
-                    <Input type="text" name="Nombre" onChange={onChangeHandler} />
+                    <Input type="text" name="nombre" onChange={onChangeHandler} />
                 </div>
 
                 <div>
                     <Label htmlFor="">Quienes somos</Label>
-                    <Input type="text" name="Descripcion" onChange={onChangeHandler} />
+                    <Input type="text" name="descripcion" onChange={onChangeHandler} />
                 </div>
 
                 <div>
                     <Label htmlFor="">Ciudad</Label>
-                    <Select arr={['La Paz', 'Cochabamba', 'Santa Cruz']} name='Ciudad' click={onClickHandler} />
+                    <Select arr={['La Paz', 'Cochabamba', 'Santa Cruz']} name='ciudad' click={onClickHandler} />
                 </div>
 
                 <div>
                     <Label htmlFor="">Direccion</Label>
-                    <Input type="text" name="Direccion" onChange={onChangeHandler} />
+                    <Input type="text" name="direccion" onChange={onChangeHandler} />
                 </div>
                 <div>
                     <Label htmlFor="">Dias de atención</Label>
@@ -89,34 +91,34 @@ export default function Home() {
                 <div>
                     <Label htmlFor="">Horarios de Atención</Label>
                     <div className='w-full flex justify-between'>
-                        <Input type="time" name={'timeInit'} onChange={onChangeHandler} />
+                        <Input type="time" name={'horarios de apertura'} onChange={onChangeHandler} />
                         <span className='w-6/12 flex justify-center items-center'>a</span>
-                        <Input type="time" name={'timeFinish'} onChange={onChangeHandler} />
+                        <Input type="time" name={'horarios de cierre'} onChange={onChangeHandler} />
                     </div>
                 </div>
                 <div>
                     <Label htmlFor="">Numero de tarjeta</Label>
-                    <Input type="text" reference={inputRefCard} name="Numero de tarjeta" styled={{ textAlign: 'center' }} onChange={onChangeHandler} />
+                    <Input type="text" reference={inputRefCard} name="numero de tarjeta" styled={{ textAlign: 'center' }} onChange={onChangeHandler} />
                 </div>
                 <div>
                     <div className='w-full flex justify-between'>
                         <div className='w-5/12'>
                             <Label htmlFor="">Fecha</Label>
-                            <Input reference={inputRefDate} name="Fecha" styled={{ textAlign: 'center' }} onChange={onChangeHandler} />
+                            <Input reference={inputRefDate} name="fecha de tarjeta" styled={{ textAlign: 'center' }} onChange={onChangeHandler} />
                         </div>
                         <div className='w-5/12'>
                             <Label htmlFor="">CVC</Label>
-                            <Input reference={inputRefCVC} name="CVC" styled={{ textAlign: 'center' }} onChange={onChangeHandler} />
+                            <Input reference={inputRefCVC} name="cvc" styled={{ textAlign: 'center' }} onChange={onChangeHandler} />
                         </div>
                     </div>
                 </div>
                 <div>
                     <Label htmlFor="">Teléfono</Label>
-                    <Input type="text" name="Telefono" reference={inputRefPhone}  onChange={onChangeHandler} />
+                    <Input type="text" name="telefono" reference={inputRefPhone}  onChange={onChangeHandler} />
                 </div>
                 <div>
                     <Label htmlFor="">Whatsapp</Label>
-                    <Input type="text" name="Whatsapp" onChange={onChangeHandler} reference={inputRefWhatsApp} />
+                    <Input type="text" name="whatsapp" onChange={onChangeHandler} reference={inputRefWhatsApp} />
                 </div>
             </div>
             <div className='flex w-full justify-around'>
@@ -128,7 +130,7 @@ export default function Home() {
 }
 
 
-
+export default  WithAuth(Home)
 
 
 
